@@ -23,7 +23,7 @@ final class GameViewModel: ObservableObject, GameViewModelProtocol {
     // MARK: - Internal Properties
     var currentPage: Int = 1
     private let gameService: GameServiceProtocol
-
+    
     // MARK: - Initializer
     init(gameService: GameServiceProtocol = GameService()) {
         self.gameService = gameService
@@ -38,11 +38,9 @@ final class GameViewModel: ObservableObject, GameViewModelProtocol {
         guard !isLoading else { return }
         
         isLoading = true
-
-        let path = NetworkPath.games(page: page)
-
+        
         // MARK: - Fetch Games
-        gameService.fetchGames(path: path) { [weak self] result in
+        gameService.fetchGames(path: NetworkPath.games(page: page)) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let gameResults):
@@ -51,7 +49,7 @@ final class GameViewModel: ObservableObject, GameViewModelProtocol {
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
-                self?.isLoading = false 
+                self?.isLoading = false
             }
         }
     }

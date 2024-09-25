@@ -32,7 +32,7 @@ struct GameTabView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(height: 200)
-                            .cornerRadius(15)
+                            .cornerRadius(12)
                             .foregroundColor(.gray)
                     }
                     

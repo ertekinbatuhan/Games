@@ -18,7 +18,7 @@ struct GameRowView: View {
                         .resizable()
                         .scaledToFill()
                         .frame(width: 180, height: 100)
-                        .cornerRadius(5)
+                        .cornerRadius(12)
                 } placeholder: {
                     ProgressView()
                         .frame(width: 50, height: 50)
@@ -28,7 +28,7 @@ struct GameRowView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 50, height: 50)
-                    .cornerRadius(5)
+                    .cornerRadius(12)
                     .foregroundColor(.gray)
             }
             

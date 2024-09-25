@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Game
-struct Game: Codable {
+struct Game: Codable , Equatable{
     let count: Int?
     let next: String?
     let previous: String?
@@ -17,7 +17,7 @@ struct Game: Codable {
 }
 
 // MARK: - Result
-struct GameResult: Codable {
+struct GameResult: Codable , Identifiable, Equatable{
     let id: Int?
     let slug, name, released: String?
     let tba: Bool?
@@ -34,6 +34,10 @@ struct GameResult: Codable {
         case ratingTop = "rating_top"
         case shortScreenshots = "short_screenshots"
     }
+    
+       static func == (lhs: GameResult, rhs: GameResult) -> Bool {
+           return lhs.id == rhs.id
+       }
 }
 
 // MARK: - Genre

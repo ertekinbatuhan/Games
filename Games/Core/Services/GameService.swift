@@ -10,6 +10,7 @@ import Foundation
 //MARK: - GameServiceProtocol
 protocol GameServiceProtocol {
     func fetchGames(path: NetworkPath, completion: @escaping (Result<[GameResult], Error>) -> Void)
+    func fetchGameDetail(id: Int, completion: @escaping (Result<GameDetail, Error>) -> Void)
 }
 
 // MARK: - GameService
@@ -31,4 +32,17 @@ final class GameService: GameServiceProtocol {
             }
         }
     }
+    
+    // Game Detail fetching function
+     func fetchGameDetail(id: Int, completion: @escaping (Result<GameDetail, Error>) -> Void) {
+         networkManager.requestData(path: NetworkPath.gameDetail(id: id), type: GameDetail.self) { result in
+             switch result {
+             case .success(let gameDetail):
+                 completion(.success(gameDetail))
+             case .failure(let error):
+                 completion(.failure(error)) 
+             }
+         }
+     }
+   
 }

@@ -17,16 +17,19 @@ struct GamesView: View {
                 GameTabView(games: viewModel.games, currentPage: $currentPage)
 
                 List(viewModel.games) { game in
-                    GameRowView(game: game)
-                        .onAppear {
-                            if viewModel.games.last == game && !viewModel.isLoading {
-                                viewModel.loadGames(page: viewModel.currentPage + 1)
-                            }
+                    NavigationLink(destination: GameDetailView(gameId: game.id ?? 0)) {
+                        GameRowView(game: game)
+                    }
+                    .onAppear {
+                        if viewModel.games.last == game && !viewModel.isLoading {
+                            viewModel.loadGames(page: viewModel.currentPage + 1)
                         }
+                    }
                 }
                 .listStyle(PlainListStyle())
             }
-            .navigationTitle("Games").navigationBarTitleDisplayMode(.large)
+            .navigationTitle("Games")
+            .navigationBarTitleDisplayMode(.large)
             .onAppear {
                 viewModel.loadGames(page: 1)
             }

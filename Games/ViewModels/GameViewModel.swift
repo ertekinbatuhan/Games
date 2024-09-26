@@ -10,8 +10,7 @@ import Foundation
 // MARK: - GameViewModelProtocol
 protocol GameViewModelProtocol {
     func loadGames(page: Int)
-    var games: [GameResult] { get }
-    var isLoading: Bool { get }
+    func searchGames(name: String, page: Int) 
 }
 
 // MARK: - GameViewModel
@@ -37,6 +36,7 @@ final class GameViewModel: ObservableObject, GameViewModelProtocol {
     /// - Parameter page: The page number to load games from.
     func loadGames(page: Int) {
         
+        self.games.removeAll()
         // MARK: - Prevent Concurrent Loading
         guard !isLoading else { return }
         
@@ -56,5 +56,30 @@ final class GameViewModel: ObservableObject, GameViewModelProtocol {
             }
         }
     }
+    
+    // MARK: - Search Games Function
+    /// Searches for games using the given name and page number.
+    /// - Parameters:
+    ///   - name: The name of the game to search for.
+    ///   - page: The page number for pagination.
+    func searchGames(name: String, page: Int) {
+        
+        // MARK: - Prevent Concurrent Loading
+        guard !isLoading else { return }
+        
+        isLoading = true
+        
+        gameService.fetchGameSearch(page: page, name: name) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let gameResults):
+                    self?.games = gameResults
+                    self?.currentPage = page
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+                self?.isLoading = false
+            }
+        }
+    }
 }
-

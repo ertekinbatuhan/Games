@@ -9,7 +9,8 @@ import SwiftUI
 
 struct GamesView: View {
     @StateObject private var viewModel = GameViewModel()
-    @State private var currentPage: Int = 0
+    @State private var currentPage: Int = 1
+    @State private var search: String = ""
     
     var body: some View {
         NavigationStack {
@@ -28,6 +29,14 @@ struct GamesView: View {
                 }
                 .listStyle(PlainListStyle())
             }
+            .searchable(text: $search, prompt: "Search in games") 
+            .onChange(of: search) {
+                if search.isEmpty {
+                    viewModel.loadGames(page: 1)
+                } else {
+                    viewModel.searchGames(name: search, page: 1)
+                }
+            }
             .navigationTitle("Games")
             .navigationBarTitleDisplayMode(.large)
             .onAppear {
@@ -38,6 +47,7 @@ struct GamesView: View {
         }
     }
 }
+
 #Preview {
     GamesView()
 }

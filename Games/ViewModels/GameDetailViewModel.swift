@@ -10,22 +10,20 @@ import Foundation
 // MARK: - GameDetailViewModelProtocol
 protocol GameDetailViewModelProtocol {
     func loadGameDetail(id: Int)
-    var gameDetail: GameDetail? { get }
-    var isLoading: Bool { get }
 }
 
 // MARK: - GameDetailViewModel
 final class GameDetailViewModel: ObservableObject, GameDetailViewModelProtocol {
     @Published var gameDetail: GameDetail?
     @Published var isLoading: Bool = false
-
+    
     private let gameService: GameServiceProtocol
-
+    
     // MARK: - Initializer
     init(gameService: GameServiceProtocol = GameService()) {
         self.gameService = gameService
     }
-
+    
     // MARK: - Fetch Game Detail Function
     /// Fetches game detail for the given ID.
     /// - Parameter id: The ID of the game to fetch details for.

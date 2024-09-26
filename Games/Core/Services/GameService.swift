@@ -24,25 +24,15 @@ final class GameService: GameServiceProtocol {
     // General data fetching function
     func fetchGames(path: NetworkPath, completion: @escaping (Result<[GameResult], Error>) -> Void) {
         networkManager.requestData(path: path, type: Game.self) { result in
-            switch result {
-            case .success(let game): 
-                completion(.success(game.results ?? []))
-            case .failure(let error):
-                completion(.failure(error))
-            }
+            completion(result.map { $0.results ?? [] })
         }
     }
     
     // Game Detail fetching function
-     func fetchGameDetail(id: Int, completion: @escaping (Result<GameDetail, Error>) -> Void) {
-         networkManager.requestData(path: NetworkPath.gameDetail(id: id), type: GameDetail.self) { result in
-             switch result {
-             case .success(let gameDetail):
-                 completion(.success(gameDetail))
-             case .failure(let error):
-                 completion(.failure(error)) 
-             }
-         }
-     }
+    func fetchGameDetail(id: Int, completion: @escaping (Result<GameDetail, Error>) -> Void) {
+        networkManager.requestData(path: NetworkPath.gameDetail(id: id), type: GameDetail.self) { result in
+            completion(result)
+        }
+    }
    
 }

@@ -30,12 +30,13 @@ final class GameViewModel: ObservableObject, GameViewModelProtocol {
     init(gameService: GameServiceProtocol = GameService()) {
         self.gameService = gameService
     }
-
+    
     // MARK: - Load Games Function
     /// Fetches games from the given page using the game service.
     /// Prevents multiple requests from being made at the same time.
     /// - Parameter page: The page number to load games from.
     func loadGames(page: Int) {
+        
         // MARK: - Prevent Concurrent Loading
         guard !isLoading else { return }
         
@@ -56,3 +57,4 @@ final class GameViewModel: ObservableObject, GameViewModelProtocol {
         }
     }
 }
+

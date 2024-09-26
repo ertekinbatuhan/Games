@@ -10,6 +10,8 @@ import Foundation
 // MARK: - GameViewModelProtocol
 protocol GameViewModelProtocol {
     func loadGames(page: Int)
+    var games: [GameResult] { get }
+    var isLoading: Bool { get }
 }
 
 // MARK: - GameViewModel

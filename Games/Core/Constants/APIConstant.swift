@@ -8,5 +8,11 @@
 // MARK: - API Constant configuration
 struct APIConstant {
     static let baseURL = "https://api.rawg.io/api"
+    static let search = "&search="
     static let apiKey = "$$$$$$$$$$$$$$$$$$$$$$$$"
+   
 }
+
+
+
+ 

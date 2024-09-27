@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct GameTabView: View {
-    let games: [GameResult]
     @Binding var currentPage: Int
+    let games: [GameResult]
     
     var body: some View {
         TabView(selection: $currentPage) {

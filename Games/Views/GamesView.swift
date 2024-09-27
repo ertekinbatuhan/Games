@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct GamesView: View {
+    
     @StateObject private var viewModel = GameViewModel()
+    @StateObject private var favoriteGameViewModel = FavoriteGameViewModel()
     @State private var currentPage: Int = 1
     @State private var search: String = ""
+    @Environment(\.modelContext) private var modelContex
     
     var body: some View {
         NavigationStack {
@@ -21,6 +25,22 @@ struct GamesView: View {
                     NavigationLink(destination: GameDetailView(gameId: game.id ?? 0)) {
                         GameRowView(game: game)
                     }
+                    .swipeActions {
+                        Button(action: {
+                            // Favori oyunu ekle
+                            favoriteGameViewModel.addFavoriteGame(
+                                id: game.id,
+                                name: game.name,
+                                released: game.released,
+                                backgroundImage: game.backgroundImage,
+                                rating: game.rating,
+                                context: modelContex
+                            )
+                        }) {
+                            Label("Add Favorites", systemImage: "heart")
+                        }
+                        .tint(.red)
+                    }
                     .onAppear {
                         if viewModel.games.last?.id == game.id && !viewModel.isLoading {
                             viewModel.loadGames(page: viewModel.currentPage + 1)
@@ -29,7 +49,7 @@ struct GamesView: View {
                 }
                 .listStyle(PlainListStyle())
             }
-            .searchable(text: $search, prompt: "Search in games") 
+            .searchable(text: $search, prompt: "Search in games")
             .onChange(of: search) {
                 if search.isEmpty {
                     viewModel.loadGames(page: 1)

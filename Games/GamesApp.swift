@@ -12,6 +12,6 @@ struct GamesApp: App {
     var body: some Scene {
         WindowGroup {
             MainTabView()
-        }
+        }.modelContainer(for : [FavoriteGame.self])
     }
 }

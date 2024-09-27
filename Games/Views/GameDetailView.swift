@@ -9,8 +9,8 @@ import SwiftUI
 
 struct GameDetailView: View {
     @StateObject private var viewModel = GameDetailViewModel()
-    let gameId: Int
     @Environment(\.colorScheme) var colorScheme
+    let gameId: Int
 
     var body: some View {
         ScrollView {

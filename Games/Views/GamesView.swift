@@ -19,7 +19,7 @@ struct GamesView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                GameTabView(games: viewModel.games, currentPage: $currentPage)
+                GameTabView(currentPage: $currentPage, games: viewModel.games)
                 
                 List(viewModel.games) { game in
                     NavigationLink(destination: GameDetailView(gameId: game.id ?? 0)) {
@@ -27,7 +27,6 @@ struct GamesView: View {
                     }
                     .swipeActions {
                         Button(action: {
-                            // Favori oyunu ekle
                             favoriteGameViewModel.addFavoriteGame(
                                 id: game.id,
                                 name: game.name,

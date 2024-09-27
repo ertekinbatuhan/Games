@@ -20,8 +20,10 @@ struct FavoriteGamesView: View {
             ScrollView {
                 LazyVStack(spacing: 20) {
                     ForEach(favoriteGameViewModel.filteredGames.isEmpty ? favoriteGames : favoriteGameViewModel.filteredGames) { game in
-                        FavoriteGameCardView(game: game)
-                            .environmentObject(favoriteGameViewModel)
+                        NavigationLink(destination: GameDetailView(gameId: game.id ?? 0)) { 
+                            FavoriteGameCardView(game: game)
+                                .environmentObject(favoriteGameViewModel)
+                        }
                     }
                 }
                 .padding()
@@ -32,7 +34,8 @@ struct FavoriteGamesView: View {
             }
             .onAppear {
                 favoriteGameViewModel.filteredGames = favoriteGames
-            }.navigationTitle("Favorite Games")
+            }
+            .navigationTitle("Favorite Games")
         }
     }
 }

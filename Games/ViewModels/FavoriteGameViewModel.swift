@@ -45,6 +45,9 @@ final class FavoriteGameViewModel: ObservableObject, FavoriteGameViewModelProtoc
         withAnimation {
             do {
                 try context.save()
+                if let index = filteredGames.firstIndex(of: game) {
+                    filteredGames.remove(at: index)
+                }
             } catch {
                 print("Error deleting favorite game: \(error.localizedDescription)")
             }

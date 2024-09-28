@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import Lottie
 
 struct FavoriteGamesView: View {
     @Query(sort: [SortDescriptor(\FavoriteGame.released, order: .reverse)], animation: .snappy)
@@ -19,11 +20,19 @@ struct FavoriteGamesView: View {
         NavigationStack {
             ScrollView {
                 LazyVStack(spacing: 20) {
-                    ForEach(favoriteGameViewModel.filteredGames.isEmpty ? favoriteGames : favoriteGameViewModel.filteredGames) { game in
-                        NavigationLink(destination: GameDetailView(gameId: game.id ?? 0)) { 
-                            FavoriteGameCardView(game: game)
-                                .environmentObject(favoriteGameViewModel)
-                            
+                    if favoriteGameViewModel.filteredGames.isEmpty {
+                        GeometryReader { geometry in
+                            LottieView(animation: .named("nodata")).looping()
+                                .frame(width: 250, height: 250)
+                                .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                        }
+                        .frame(height: 600)
+                    } else {
+                        ForEach(favoriteGameViewModel.filteredGames) { game in
+                            NavigationLink(destination: GameDetailView(gameId: game.id ?? 0)) {
+                                FavoriteGameCardView(game: game)
+                                    .environmentObject(favoriteGameViewModel)
+                            }
                         }
                     }
                 }

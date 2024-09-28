@@ -23,6 +23,7 @@ struct FavoriteGamesView: View {
                         NavigationLink(destination: GameDetailView(gameId: game.id ?? 0)) { 
                             FavoriteGameCardView(game: game)
                                 .environmentObject(favoriteGameViewModel)
+                            
                         }
                     }
                 }

@@ -14,14 +14,13 @@ struct FavoriteGameCardView: View {
     var game: FavoriteGame
     
     var body: some View {
-        ZStack {
+        ZStack(alignment: .topTrailing) {
             AsyncImage(url: URL(string: game.backgroundImage ?? "")) { image in
                 switch image {
                 case .success(let loadedImage):
                     loadedImage
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 250)
+                        .frame(width: 400 ,height: 200)
                         .cornerRadius(15)
                         .onLongPressGesture {
                             showDeleteConfirmation = true
@@ -34,9 +33,16 @@ struct FavoriteGameCardView: View {
             .cornerRadius(15)
             .shadow(radius: 4)
             
+            Image(systemName: "heart.fill")
+                .font(.system(size: 24))
+                .foregroundColor(.red)
+                .padding(10)
+                .background(Color.white.opacity(0.8))
+                .cornerRadius(30)
+                .padding([.top, .trailing], 10)
+            
             VStack {
                 Spacer()
-                
                 FavoriteGameInfoView(game: game)
                     .padding(.bottom, 10)
             }

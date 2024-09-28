@@ -11,17 +11,17 @@ struct FavoriteGameInfoView: View {
     var game: FavoriteGame
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 5) {
             Text(game.name ?? "Unknown Game")
                 .font(.headline)
                 .foregroundColor(.white)
                 .lineLimit(2)
-                .padding(.horizontal, 10)
+                .padding(.horizontal, 8)
             
             Text("Released: \(game.released ?? "Unknown")")
                 .font(.subheadline)
                 .foregroundColor(.white)
-                .padding(.horizontal, 10)
+                .padding(.horizontal, 8)
             
             HStack(spacing: 2) {
                 ForEach(0..<5) { index in
@@ -29,12 +29,12 @@ struct FavoriteGameInfoView: View {
                         .foregroundColor(index < Int(game.rating?.rounded() ?? 0) ? .yellow : .gray)
                 }
             }
-            .padding(.horizontal, 10)
+            .padding(.horizontal, 8)
         }
-        .padding(.vertical, 10)
+        .padding(.vertical, 5)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.black.opacity(0.6))
-        .cornerRadius(15)
-        .padding(.horizontal, 10)
+        .cornerRadius(12)
+        .padding(.horizontal, 2)
     }
 }

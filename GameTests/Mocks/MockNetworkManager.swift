@@ -5,8 +5,8 @@
 //  Created by Batuhan Berk Ertekin on 28.09.2024.
 //
 
-@testable import Games
 import SwiftUI
+@testable import Games
 // MARK: - Mock Network Manager
 class MockNetworkManager: NetworkManagerProtocol {
     var result: Result<Data, Error>?

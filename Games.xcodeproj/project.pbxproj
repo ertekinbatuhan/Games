@@ -26,9 +26,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		C01608C92CA87878008C263C /* GamesUnitTests */ = {
+		C01608C92CA87878008C263C /* GameTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = GamesUnitTests;
+			path = GameTests;
 			sourceTree = "<group>";
 		};
 		C0EBCAC42CA1EA2A0048C280 /* Games */ = {
@@ -61,7 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				C0EBCAC42CA1EA2A0048C280 /* Games */,
-				C01608C92CA87878008C263C /* GamesUnitTests */,
+				C01608C92CA87878008C263C /* GameTests */,
 				C0EBCAC32CA1EA2A0048C280 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -92,7 +92,7 @@
 				C01608CD2CA87878008C263C /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				C01608C92CA87878008C263C /* GamesUnitTests */,
+				C01608C92CA87878008C263C /* GameTests */,
 			);
 			name = GamesUnitTests;
 			packageProductDependencies = (

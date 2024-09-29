@@ -43,7 +43,7 @@ struct GameRowView: View {
                             Text(genre.name ?? "Unknown Genre")
                                 .font(.subheadline)
                                 .padding(5)
-                                .background(Color.blue.opacity(0.9))
+                                .background(Color.yellow.opacity(0.9))
                                 .foregroundColor(.white)
                                 .cornerRadius(12)
                                 .padding(.trailing, 5)

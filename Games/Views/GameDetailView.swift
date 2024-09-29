@@ -11,7 +11,7 @@ struct GameDetailView: View {
     @StateObject private var viewModel = GameDetailViewModel()
     @Environment(\.colorScheme) var colorScheme
     let gameId: Int
-
+    
     var body: some View {
         ScrollView {
             ZStack(alignment: .top) {
@@ -22,8 +22,8 @@ struct GameDetailView: View {
                         ProgressView()
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                     } else if let gameDetail = viewModel.gameDetail {
-                        GameHeaderView(gameDetail: gameDetail, colorScheme: colorScheme)
-                        RatingView(gameDetail: gameDetail, colorScheme: colorScheme)
+                        GameHeaderView(gameDetail: gameDetail)
+                        RatingView(gameDetail: gameDetail)
                         GameDetailDescriptionView(gameDetail: gameDetail)
                     }
                 }
@@ -40,4 +40,4 @@ struct GameDetailView: View {
 #Preview {
     GameDetailView(gameId: 3489)
 }
-    
+

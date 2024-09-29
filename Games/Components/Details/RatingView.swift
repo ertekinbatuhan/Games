@@ -9,8 +9,7 @@ import SwiftUI
 
 struct RatingView: View {
     let gameDetail: GameDetail
-    let colorScheme: ColorScheme
-
+    
     var body: some View {
         HStack {
             ForEach(0..<5) { index in
@@ -26,9 +25,9 @@ struct RatingView: View {
             if let metacriticScore = gameDetail.metacritic {
                 Text("Metacritic: \(metacriticScore)")
                     .font(.subheadline)
-                    .foregroundColor(colorScheme == .dark ? .black : .white)
+                    .foregroundColor(.white)
                     .padding(6)
-                    .background(colorScheme == .dark ? .white : .black)
+                    .background(Color.yellow.opacity(0.9))
                     .cornerRadius(10)
             }
         }
@@ -36,3 +35,4 @@ struct RatingView: View {
         .padding(.top, 10)
     }
 }
+

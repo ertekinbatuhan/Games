@@ -9,7 +9,6 @@ import SwiftUI
 
 struct GameHeaderView: View {
     let gameDetail: GameDetail
-    let colorScheme: ColorScheme
 
     var body: some View {
         HStack {
@@ -23,9 +22,9 @@ struct GameHeaderView: View {
             if let released = gameDetail.released {
                 Text("Released: \(released)")
                     .font(.subheadline)
-                    .foregroundColor(colorScheme == .dark ? .black : .white)
+                    .foregroundColor(.white)
                     .padding(6)
-                    .background(colorScheme == .dark ? .white : .black)
+                    .background(Color.yellow.opacity(0.9))
                     .cornerRadius(10)
                     .padding(.top, 140)
             }

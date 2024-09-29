@@ -30,7 +30,7 @@
 
  
 ## Architecture Used 
-The Game App is built using the MVVM (Model-View-ViewModel) architectural pattern. This architecture helps to separate the business logic and data handling from the user interface, making the app more modular, testable, and maintainable.
+The Games App is built using the MVVM (Model-View-ViewModel) architectural pattern. This architecture helps to separate the business logic and data handling from the user interface, making the app more modular, testable, and maintainable.
 
 - **Model**:Represents the data and business logic of the application. It is responsible for data operations, including fetching, storing, and managing application data. The Model communicates with external services or databases, ensuring that the app has the most current and accurate information.
 - **View**: The user interface of the app, responsible for displaying data to users and handling user interactions. The View observes the ViewModel for changes in the data and updates the user interface accordingly, ensuring a responsive and dynamic experience.
@@ -43,19 +43,19 @@ The Game App is built using the MVVM (Model-View-ViewModel) architectural patter
 1. Clone this repository:
 
 ```bash
-git clone https://github.com/ertekinbatuhan/game-app.git
+git clone https://github.com/ertekinbatuhan/Games.git
 ```
 
 2. Open the Project in Xcode:
 
 ```bash
-cd game-app
+cd Games
 ```
 
 2. Open the project using Xcode:
 
 ```bash
-open GameApp.xcodeproj
+open Games.xcodeproj
 ```
 3. Add required dependencies using Swift Package Manager:
  - For Lottie, navigate to File > Add Packages in Xcode and enter:

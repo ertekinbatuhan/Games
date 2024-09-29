@@ -9,7 +9,6 @@ import SwiftUI
 
 struct GameDetailView: View {
     @StateObject private var viewModel = GameDetailViewModel()
-    @Environment(\.colorScheme) var colorScheme
     let gameId: Int
     
     var body: some View {

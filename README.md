@@ -64,7 +64,7 @@ https://github.com/airbnb/lottie-ios.git
 ```
 4.	Set your API key in your project. You can place the following line in the appropriate file:
 ```bash
-static let apiKey = ""
+static let apiKey = "SET_YOUR_API_KEY"
 
 ```
 5. Run the application:

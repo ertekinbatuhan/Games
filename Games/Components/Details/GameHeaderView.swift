@@ -9,9 +9,10 @@ import SwiftUI
 
 struct GameHeaderView: View {
     let gameDetail: GameDetail
-
+    
     var body: some View {
         HStack {
+            
             Text(gameDetail.name ?? "Unknown Game")
                 .font(.title)
                 .bold()
@@ -20,15 +21,24 @@ struct GameHeaderView: View {
             Spacer()
             
             if let released = gameDetail.released {
-                Text("Released: \(released)")
-                    .font(.subheadline)
-                    .foregroundColor(.white)
-                    .padding(6)
-                    .background(Color.yellow.opacity(0.9))
-                    .cornerRadius(10)
-                    .padding(.top, 140)
+                HStack {
+                    
+                    Image(systemName: "calendar")
+                        .foregroundColor(.white)
+                    
+                    Text(released.formatDate())
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                }
+                .padding(8)
+                .background(LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.8), Color.orange.opacity(0.8)]), startPoint: .leading, endPoint: .trailing))
+                .cornerRadius(12)
+                .shadow(radius: 4)
+                .padding(.top, 140)
             }
         }
         .padding(.horizontal)
     }
+    
+    
 }

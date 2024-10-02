@@ -35,7 +35,7 @@ struct GameRowView: View {
             VStack(alignment: .leading) {
                 Text(game.name ?? "Unknown Game")
                     .font(.headline)
-        
+                
                 HStack {
                     if let genres = game.genres {
                         let displayedGenres = genres.prefix(2)
@@ -43,7 +43,7 @@ struct GameRowView: View {
                             Text(genre.name ?? "Unknown Genre")
                                 .font(.subheadline)
                                 .padding(5)
-                                .background(Color.yellow.opacity(0.9))
+                                .background(LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.8), Color.orange.opacity(0.8)]), startPoint: .leading, endPoint: .trailing))
                                 .foregroundColor(.white)
                                 .cornerRadius(12)
                                 .padding(.trailing, 5)

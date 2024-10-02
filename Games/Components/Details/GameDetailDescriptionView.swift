@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GameDetailDescriptionView: View {
     let gameDetail: GameDetail
-
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {

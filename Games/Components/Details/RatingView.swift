@@ -12,6 +12,7 @@ struct RatingView: View {
     
     var body: some View {
         HStack {
+            
             ForEach(0..<5) { index in
                 Image(systemName: index < Int(gameDetail.rating?.rounded() ?? 0) ? "star.fill" : "star")
                     .foregroundColor(index < Int(gameDetail.rating?.rounded() ?? 0) ? .yellow : .gray)
@@ -19,20 +20,26 @@ struct RatingView: View {
             Text("(\(String(format: "%.1f", gameDetail.rating ?? 0)))")
                 .font(.subheadline)
                 .foregroundColor(.gray)
-
+            
             Spacer()
             
             if let metacriticScore = gameDetail.metacritic {
-                Text("Metacritic: \(metacriticScore)")
-                    .font(.subheadline)
-                    .foregroundColor(.white)
-                    .padding(6)
-                    .background(Color.yellow.opacity(0.9))
-                    .cornerRadius(10)
+                HStack {
+                    Image("metascore")
+                        .resizable()
+                        .frame(width: 32, height: 32)
+                    
+                    Text("\(metacriticScore)")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding(8)
+                        .background(LinearGradient(gradient: Gradient(colors: [Color.yellow.opacity(0.8), Color.orange.opacity(0.8)]), startPoint: .leading, endPoint: .trailing))
+                        .cornerRadius(12)
+                        .shadow(radius: 4)
+                }
             }
         }
         .padding(.horizontal)
         .padding(.top, 10)
     }
 }
-

@@ -35,9 +35,9 @@ struct GameResult: Codable , Identifiable, Equatable{
         case shortScreenshots = "short_screenshots"
     }
     
-       static func == (lhs: GameResult, rhs: GameResult) -> Bool {
-           return lhs.id == rhs.id
-       }
+    static func == (lhs: GameResult, rhs: GameResult) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
 // MARK: - Genre
@@ -46,7 +46,7 @@ struct Genre: Codable {
     let name, slug: String?
     let gamesCount: Int?
     let imageBackground: String?
-
+    
     enum CodingKeys: String, CodingKey {
         case id, name, slug
         case gamesCount = "games_count"

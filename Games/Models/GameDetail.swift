@@ -23,7 +23,7 @@ struct GameDetail: Codable {
     let ratingsCount: Int?
     let metacriticURL: String?
     let gameSeriesCount: Int?
-
+    
     enum CodingKeys: String, CodingKey {
         case id, name, description, metacritic, released
         case backgroundImage = "background_image"

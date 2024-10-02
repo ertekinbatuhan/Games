@@ -17,7 +17,7 @@ enum NetworkPath: NetworkPathProtocol {
     case games(page: Int)
     case gameDetail(id: Int)
     case gameSearch(page: Int, name: String)
-
+    
     var value: String {
         switch self {
         case .games(let page):
@@ -29,7 +29,7 @@ enum NetworkPath: NetworkPathProtocol {
             return "/games?key=\(APIConstant.apiKey)&page=\(page)\(APIConstant.search)\(encodedName)"
         }
     }
-
+    
     var url: URL? {
         return URL(string: APIConstant.baseURL + value)
     }

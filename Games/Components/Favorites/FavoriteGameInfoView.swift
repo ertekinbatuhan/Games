@@ -18,10 +18,17 @@ struct FavoriteGameInfoView: View {
                 .lineLimit(2)
                 .padding(.horizontal, 8)
             
-            Text("Released: \(game.released ?? "Unknown")")
-                .font(.subheadline)
-                .foregroundColor(.white)
-                .padding(.horizontal, 8)
+            if let releasedDate = game.released {
+                Text("Released: \(releasedDate.formatDate())")
+                    .font(.subheadline)
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 8)
+            } else {
+                Text("Released: Unknown")
+                    .font(.subheadline)
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 8)
+            }
             
             HStack(spacing: 2) {
                 ForEach(0..<5) { index in

@@ -9,7 +9,8 @@
 
 
  ## Screenshots
-![Screenshot 2024-09-29 at 09 16 36](https://github.com/user-attachments/assets/4adc5c72-301b-49c2-9489-3e9eb7aca792)
+
+![Screenshot 2024-10-02 at 10 46 10](https://github.com/user-attachments/assets/8b5a25d1-a1c8-4948-8b19-6003834ad503)
 
 
 ## Technologies Used

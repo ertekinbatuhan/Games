@@ -9,7 +9,8 @@
 
 
  ## Screenshots
-![Screenshot 2024-09-29 at 09 16 36](https://github.com/user-attachments/assets/4adc5c72-301b-49c2-9489-3e9eb7aca792)
+
+![Screenshot 2024-10-02 at 10 46 10](https://github.com/user-attachments/assets/8b5a25d1-a1c8-4948-8b19-6003834ad503)
 
 
 ## Technologies Used
@@ -46,28 +47,28 @@ The Games App is built using the MVVM (Model-View-ViewModel) architectural patte
 git clone https://github.com/ertekinbatuhan/Games.git
 ```
 
-2. Open the Project in Xcode:
+2. Navigate to the project directory:
 
 ```bash
 cd Games
 ```
 
-2. Open the project using Xcode:
+3. Open the Project in Xcode:
 
 ```bash
 open Games.xcodeproj
 ```
-3. Add required dependencies using Swift Package Manager:
+4. Add required dependencies using Swift Package Manager:
  - For Lottie, navigate to File > Add Packages in Xcode and enter:
 ```bash
 https://github.com/airbnb/lottie-ios.git
 ```
-4.	Set your API key in your project. You can place the following line in the appropriate file:
+5.	Set your API key in your project. You can place the following line in the appropriate file:
 ```bash
 static let apiKey = "SET_YOUR_API_KEY"
 
 ```
-5. Run the application:
+6. Run the application:
 - Select your target device or simulator.
 - Click the Run button (or use the shortcut Cmd + R) to build and run the application.
 

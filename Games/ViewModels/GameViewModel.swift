@@ -36,7 +36,6 @@ final class GameViewModel: ObservableObject, GameViewModelProtocol {
     /// - Parameter page: The page number to load games from.
     func loadGames(page: Int) {
         
-        self.games.removeAll()
         // MARK: - Prevent Concurrent Loading
         guard !isLoading else { return }
         

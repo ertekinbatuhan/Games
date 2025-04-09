@@ -9,12 +9,13 @@ import Foundation
 
 // MARK: - GameViewModelProtocol
 protocol GameViewModelProtocol {
-    func loadGames(page: Int)
-    func searchGames(name: String, page: Int) 
+    func loadGames(page: Int) async
+    func searchGames(name: String, page: Int) async 
 }
 
 // MARK: - GameViewModel
 /// ViewModel responsible for managing game data
+@MainActor
 final class GameViewModel: ObservableObject, GameViewModelProtocol {
     
     // MARK: - Published Properties
@@ -34,25 +35,22 @@ final class GameViewModel: ObservableObject, GameViewModelProtocol {
     /// Fetches games from the given page using the game service.
     /// Prevents multiple requests from being made at the same time.
     /// - Parameter page: The page number to load games from.
-    func loadGames(page: Int) {
+    func loadGames(page: Int) async {
         
         // MARK: - Prevent Concurrent Loading
         guard !isLoading else { return }
         
         isLoading = true
         
-        // MARK: - Fetch Games
-        gameService.fetchGames(path: NetworkPath.games(page: page)) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let gameResults):
-                    self?.games.append(contentsOf: gameResults)
-                    self?.currentPage = page
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-                self?.isLoading = false
-            }
+        // MARK: - Fetch Games using async/await
+        do {
+            let gameResults = try await gameService.fetchGames(path: NetworkPath.games(page: page))
+            self.games.append(contentsOf: gameResults)
+            self.currentPage = page
+            self.isLoading = false
+        } catch {
+            print(error.localizedDescription)
+            self.isLoading = false
         }
     }
     
@@ -61,24 +59,21 @@ final class GameViewModel: ObservableObject, GameViewModelProtocol {
     /// - Parameters:
     ///   - name: The name of the game to search for.
     ///   - page: The page number for pagination.
-    func searchGames(name: String, page: Int) {
+    func searchGames(name: String, page: Int) async {
         
         // MARK: - Prevent Concurrent Loading
         guard !isLoading else { return }
         
         isLoading = true
         
-        gameService.fetchGameSearch(page: page, name: name) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let gameResults):
-                    self?.games = gameResults
-                    self?.currentPage = page
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-                self?.isLoading = false
-            }
+        do {
+            let gameResults = try await gameService.fetchGameSearch(page: page, name: name)
+            self.games = gameResults
+            self.currentPage = page
+            self.isLoading = false
+        } catch {
+            print(error.localizedDescription)
+            self.isLoading = false
         }
     }
 }

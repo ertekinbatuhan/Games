@@ -6,34 +6,38 @@
 //
 
 @testable import Games
-
-class MockGameService: GameServiceProtocol {
+import Foundation
+// MARK: - Mock Game Service
+final class MockGameService: GameServiceProtocol {
     var mockGames: [GameResult]?
     var mockGameDetail: GameDetail?
     var mockSearchResults: [GameResult]?
     var mockError: Error?
     
-    func fetchGames(path: NetworkPath, completion: @escaping (Result<[GameResult], Error>) -> Void) {
+    func fetchGames(path: NetworkPath) async throws -> [GameResult] {
         if let error = mockError {
-            completion(.failure(error))
+            throw error
         } else if let games = mockGames {
-            completion(.success(games))
+            return games
         }
+        return []
     }
     
-    func fetchGameDetail(id: Int, completion: @escaping (Result<GameDetail, Error>) -> Void) {
+    func fetchGameDetail(id: Int) async throws -> GameDetail {
         if let error = mockError {
-            completion(.failure(error))
+            throw error
         } else if let gameDetail = mockGameDetail {
-            completion(.success(gameDetail))
+            return gameDetail
         }
+        throw NSError(domain: "MockService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Game detail not found"])
     }
     
-    func fetchGameSearch(page: Int, name: String, completion: @escaping (Result<[GameResult], Error>) -> Void) {
+    func fetchGameSearch(page: Int, name: String) async throws -> [GameResult] {
         if let error = mockError {
-            completion(.failure(error))
+            throw error
         } else if let searchResults = mockSearchResults {
-            completion(.success(searchResults))
+            return searchResults
         }
+        return []
     }
 }

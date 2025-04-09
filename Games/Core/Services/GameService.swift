@@ -9,9 +9,9 @@ import Foundation
 
 //MARK: - GameServiceProtocol
 protocol GameServiceProtocol {
-    func fetchGames(path: NetworkPath, completion: @escaping (Result<[GameResult], Error>) -> Void)
-    func fetchGameDetail(id: Int, completion: @escaping (Result<GameDetail, Error>) -> Void)
-    func fetchGameSearch(page: Int, name: String, completion: @escaping (Result<[GameResult], Error>) -> Void)
+    func fetchGames(path: NetworkPath) async throws -> [GameResult]
+    func fetchGameDetail(id: Int) async throws -> GameDetail
+    func fetchGameSearch(page: Int, name: String) async throws -> [GameResult]
 }
 
 // MARK: - GameService
@@ -21,22 +21,21 @@ final class GameService: GameServiceProtocol {
     init(networkManager: NetworkManagerProtocol = NetworkManager()) {
         self.networkManager = networkManager
     }
+    
     // General data fetching function
-    func fetchGames(path: NetworkPath, completion: @escaping (Result<[GameResult], Error>) -> Void) {
-        networkManager.requestData(path: path, type: Game.self) { result in
-            completion(result.map { $0.results ?? [] })
-        }
+    func fetchGames(path: NetworkPath) async throws -> [GameResult] {
+        let game = try await networkManager.requestData(path: path, type: Game.self)
+        return game.results ?? []
     }
+    
     // Game Detail fetching function
-    func fetchGameDetail(id: Int, completion: @escaping (Result<GameDetail, Error>) -> Void) {
-        networkManager.requestData(path: NetworkPath.gameDetail(id: id), type: GameDetail.self) { result in
-            completion(result)
-        }
+    func fetchGameDetail(id: Int) async throws -> GameDetail {
+        return try await networkManager.requestData(path: NetworkPath.gameDetail(id: id), type: GameDetail.self)
     }
+    
     // Game Search fetching function
-    func fetchGameSearch(page: Int, name: String, completion: @escaping (Result<[GameResult], Error>) -> Void) {
-        networkManager.requestData(path: NetworkPath.gameSearch(page: page, name: name), type: Game.self) { result in
-            completion(result.map { $0.results ?? [] })
-        }
+    func fetchGameSearch(page: Int, name: String) async throws -> [GameResult] {
+        let game = try await networkManager.requestData(path: NetworkPath.gameSearch(page: page, name: name), type: Game.self)
+        return game.results ?? []
     }
 }

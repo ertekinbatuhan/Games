@@ -28,7 +28,7 @@ final class GameServiceTests: XCTestCase {
         super.tearDown()
     }
     
-    func testFetchGames_givenAPISuccess_whenFetchingGames_thenReturnsGames() {
+    func testFetchGames_givenAPISuccess_whenFetchingGames_thenReturnsGames() async throws {
         // Given: A successful response from the API
         let expectedGameResult = GameResult(id: 1, slug: "example-game", name: "Example Game", released: "2024-01-01", tba: false, backgroundImage: nil, rating: 9.5, ratingTop: 10, shortScreenshots: nil, genres: nil)
         let expectedGame = Game(count: 1, next: nil, previous: nil, results: [expectedGameResult], description: "Example description")
@@ -36,56 +36,30 @@ final class GameServiceTests: XCTestCase {
         mockNetworkManager.result = .success(expectedData)
         
         // When: Fetching games
-        let expectation = self.expectation(description: "Completion handler invoked")
-        var receivedResult: Result<[GameResult], Error>?
-        
-        gameService.fetchGames(path: .games(page: 1)) { result in
-            receivedResult = result
-            expectation.fulfill()
-        }
+        let games = try await gameService.fetchGames(path: .games(page: 1))
         
         // Then: The expected games should be returned
-        waitForExpectations(timeout: 1, handler: nil)
-        switch receivedResult {
-        case .success(let games):
-            XCTAssertEqual(games.first?.name, "Example Game")
-        case .failure:
-            XCTFail("Expected success, but got failure")
-        case .none:
-            break
-        }
+        XCTAssertEqual(games.first?.name, "Example Game")
     }
     
-    func testFetchGames_givenAPIFailure_whenFetchingGames_thenShowsError() {
+    func testFetchGames_givenAPIFailure_whenFetchingGames_thenShowsError() async {
         // Given: An error response from the API
         mockNetworkManager.result = .failure(NetworkError.invalidResponse)
         
-        // When: Fetching games
-        let expectation = self.expectation(description: "Completion handler invoked")
-        var receivedResult: Result<[GameResult], Error>?
-        
-        gameService.fetchGames(path: .games(page: 1)) { result in
-            receivedResult = result
-            expectation.fulfill()
-        }
-        
-        // Then: An error should be returned
-        waitForExpectations(timeout: 1, handler: nil)
-        switch receivedResult {
-        case .success:
-            XCTFail("Expected failure, but got success")
-        case .failure(let error):
+        // When & Then: Fetching games should throw an error
+        do {
+            _ = try await gameService.fetchGames(path: .games(page: 1))
+            XCTFail("Expected error to be thrown")
+        } catch {
             if case NetworkError.invalidResponse = error {
                 // Test passed
             } else {
                 XCTFail("Expected invalidResponse error, but got \(error)")
             }
-        case .none:
-            break
         }
     }
     
-    func testFetchGameDetail_givenMockSuccess_whenFetchingGameDetail_thenReturnsGameDetail() {
+    func testFetchGameDetail_givenMockSuccess_whenFetchingGameDetail_thenReturnsGameDetail() async throws {
         // Given: Mock game detail
         let expectedGameDetail = GameDetail(
             id: 1,
@@ -108,82 +82,42 @@ final class GameServiceTests: XCTestCase {
         mockGameService.mockGameDetail = expectedGameDetail
         
         // When: Fetching game detail
-        let expectation = self.expectation(description: "Completion handler invoked")
-        var receivedResult: Result<GameDetail, Error>?
-        
-        mockGameService.fetchGameDetail(id: 1) { result in
-            receivedResult = result
-            expectation.fulfill()
-        }
+        let gameDetail = try await mockGameService.fetchGameDetail(id: 1)
         
         // Then: Expected game detail should be returned
-        waitForExpectations(timeout: 1, handler: nil)
-        switch receivedResult {
-        case .success(let gameDetail):
-            XCTAssertEqual(gameDetail.name, "Example Game")
-            XCTAssertEqual(gameDetail.metacritic, 85)
-            XCTAssertEqual(gameDetail.backgroundImage, "https://example.com/image.jpg")
-            XCTAssertEqual(gameDetail.rating, 9.5)
-            XCTAssertEqual(gameDetail.added, 100)
-        case .failure:
-            XCTFail("Expected success, but got failure")
-        case .none:
-            break
-        }
+        XCTAssertEqual(gameDetail.name, "Example Game")
+        XCTAssertEqual(gameDetail.metacritic, 85)
+        XCTAssertEqual(gameDetail.backgroundImage, "https://example.com/image.jpg")
+        XCTAssertEqual(gameDetail.rating, 9.5)
+        XCTAssertEqual(gameDetail.added, 100)
     }
     
-    func testFetchGameSearch_givenMockSuccess_whenFetchingGameSearch_thenReturnsSearchResults() {
+    func testFetchGameSearch_givenMockSuccess_whenFetchingGameSearch_thenReturnsSearchResults() async throws {
         // Given: Mock search result
         let expectedGameResult = GameResult(id: 1, slug: "example-game", name: "Example Game", released: "2024-01-01", tba: false, backgroundImage: nil, rating: 9.5, ratingTop: 10, shortScreenshots: nil, genres: nil)
         mockGameService.mockSearchResults = [expectedGameResult]
         
         // When: Searching for game
-        let expectation = self.expectation(description: "Completion handler invoked")
-        var receivedResult: Result<[GameResult], Error>?
-        
-        mockGameService.fetchGameSearch(page: 1, name: "Example") { result in
-            receivedResult = result
-            expectation.fulfill()
-        }
+        let games = try await mockGameService.fetchGameSearch(page: 1, name: "Example")
         
         // Then: Expected search results should be returned
-        waitForExpectations(timeout: 1, handler: nil)
-        switch receivedResult {
-        case .success(let games):
-            XCTAssertEqual(games.first?.name, "Example Game")
-        case .failure:
-            XCTFail("Expected success, but got failure")
-        case .none:
-            break
-        }
+        XCTAssertEqual(games.first?.name, "Example Game")
     }
     
-    func testFetchGameSearch_givenMockFailure_whenFetchingGameSearch_thenShowsError() {
+    func testFetchGameSearch_givenMockFailure_whenFetchingGameSearch_thenShowsError() async {
         // Given: Mock error condition
         mockGameService.mockError = NetworkError.invalidResponse
         
-        // When: Searching for game
-        let expectation = self.expectation(description: "Completion handler invoked")
-        var receivedResult: Result<[GameResult], Error>?
-        
-        mockGameService.fetchGameSearch(page: 1, name: "Example") { result in
-            receivedResult = result
-            expectation.fulfill()
-        }
-        
-        // Then: An error should be returned
-        waitForExpectations(timeout: 1, handler: nil)
-        switch receivedResult {
-        case .success:
-            XCTFail("Expected failure, but got success")
-        case .failure(let error):
+        // When & Then: Searching for game should throw an error
+        do {
+            _ = try await mockGameService.fetchGameSearch(page: 1, name: "Example")
+            XCTFail("Expected error to be thrown")
+        } catch {
             if case NetworkError.invalidResponse = error {
                 // Test passed
             } else {
                 XCTFail("Expected invalidResponse error, but got \(error)")
             }
-        case .none:
-            break
         }
     }
 }

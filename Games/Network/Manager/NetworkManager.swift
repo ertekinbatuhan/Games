@@ -11,9 +11,8 @@ import Foundation
 protocol NetworkManagerProtocol {
     func requestData<T: Codable>(
         path: NetworkPath,
-        type: T.Type,
-        completion: @escaping (Result<T, Error>) -> Void
-    )
+        type: T.Type
+    ) async throws -> T
 }
 
 // MARK: - Network Manager Implementation
@@ -24,48 +23,31 @@ class NetworkManager: NetworkManagerProtocol {
     /// - Parameters:
     ///   - path: The network path to fetch data from.
     ///   - type: The type to decode the data into, which must conform to `Codable`.
-    ///   - completion: A closure that is called when the request is complete.
-    ///     It returns a `Result` containing either the decoded data of type `T` or an `Error`.
+    /// - Returns: The decoded data of type `T`.
+    /// - Throws: An error if the request fails or if the data cannot be decoded.
     func requestData<T: Codable>(
         path: NetworkPath,
-        type: T.Type,
-        completion: @escaping (Result<T, Error>) -> Void
-    ) {
+        type: T.Type
+    ) async throws -> T {
         // MARK: - URL Validation
         guard let url = path.url else {
-            completion(.failure(NetworkError.invalidURL))
-            return
+            throw NetworkError.invalidURL
         }
         
-        // MARK: - Create Data Task
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            
-            // MARK: - Error Handling
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            // MARK: - Response Validation
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                completion(.failure(NetworkError.invalidResponse))
-                return
-            }
-            
-            // MARK: - Data Validation
-            guard let data = data else {
-                completion(.failure(NetworkError.noData))
-                return
-            }
-            
-            // MARK: - Data Decoding
-            do {
-                let decodedData = try JSONDecoder().decode(T.self, from: data)
-                completion(.success(decodedData))
-            } catch {
-                completion(.failure(NetworkError.decodingError(error)))
-            }
-        }.resume()
+        // MARK: - Perform Request
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        // MARK: - Response Validation
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkError.invalidResponse
+        }
+        
+        // MARK: - Data Decoding
+        do {
+            return try JSONDecoder().decode(T.self, from: data)
+        } catch {
+            throw NetworkError.decodingError(error)
+        }
     }
 }
 

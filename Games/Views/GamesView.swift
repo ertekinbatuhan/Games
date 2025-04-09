@@ -20,50 +20,72 @@ struct GamesView: View {
         NavigationStack {
             VStack {
                 GameTabView(currentPage: $currentPage, games: viewModel.games)
-                
-                List(viewModel.games) { game in
-                    NavigationLink(destination: GameDetailView(gameId: game.id ?? 0)) {
-                        GameRowView(game: game)
-                    }
-                    .swipeActions {
-                        Button(action: {
-                            favoriteGameViewModel.addFavoriteGame(
-                                id: game.id,
-                                name: game.name,
-                                released: game.released,
-                                backgroundImage: game.backgroundImage,
-                                rating: game.rating,
-                                context: modelContex
-                            )
-                        }) {
-                            Label("Add Favorites", systemImage: "heart")
-                        }
-                        .tint(.red)
-                    }
-                    .onAppear {
-                        if viewModel.games.last?.id == game.id && !viewModel.isLoading {
-                            viewModel.loadGames(page: viewModel.currentPage + 1)
-                        }
-                    }
-                }
-                .listStyle(PlainListStyle())
+                gamesListView
             }
             .searchable(text: $search, prompt: "Search in games")
             .onChange(of: search) {
                 if search.isEmpty {
-                    viewModel.loadGames(page: 1)
+                    Task {
+                        await viewModel.loadGames(page: 1)
+                    }
                 } else {
-                    viewModel.searchGames(name: search, page: 1)
+                    Task {
+                        await viewModel.searchGames(name: search, page: 1)
+                    }
                 }
             }
             .navigationTitle("Games")
             .navigationBarTitleDisplayMode(.large)
             .onAppear {
                 if viewModel.games.isEmpty {
-                    viewModel.loadGames(page: 1)
+                    Task {
+                        await viewModel.loadGames(page: 1)
+                    }
                 }
             }
         }
+    }
+    
+    @ViewBuilder
+    private var gamesListView: some View {
+        List(viewModel.games) { gameResult in
+            gameRowView(gameResult)
+        }
+        .listStyle(PlainListStyle())
+    }
+    
+    @ViewBuilder
+    private func gameRowView(_ gameResult: GameResult) -> some View {
+        NavigationLink(destination: GameDetailView(gameId: gameResult.id ?? 0)) {
+            GameRowView(game: gameResult)
+        }
+        .swipeActions {
+            favoriteButtonView(gameResult)
+        }
+        .onAppear {
+            if viewModel.games.last?.id == gameResult.id && !viewModel.isLoading {
+                Task {
+                    await viewModel.loadGames(page: viewModel.currentPage + 1)
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private func favoriteButtonView(_ gameResult: GameResult) -> some View {
+        Button(action: {
+            favoriteGameViewModel.addFavoriteGame(
+                id: gameResult.id,
+                name: gameResult.name,
+                released: gameResult.released,
+                backgroundImage: gameResult.backgroundImage,
+                rating: gameResult.rating,
+                context: modelContex
+            )
+        }) {
+            Label("Add Favorites", systemImage: "heart")
+        }
+        .tint(.red)
     }
 }
 

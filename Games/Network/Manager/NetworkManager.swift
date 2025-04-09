@@ -16,7 +16,7 @@ protocol NetworkManagerProtocol {
 }
 
 // MARK: - Network Manager Implementation
-class NetworkManager: NetworkManagerProtocol {
+final class NetworkManager: NetworkManagerProtocol {
     
     // MARK: - Request Data Method
     /// Fetches data from the specified network path and decodes it into the specified type.
